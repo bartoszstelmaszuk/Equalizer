@@ -18,7 +18,7 @@ final class EqualizerColumn: UIStackView {
     
     private let offset: CGFloat = 10
     private var elements: [EqualizerComponent] = []
-    private let animationTime = 0.2
+    private let animationTime = 0.05
     private var previousVolumeLevel = 0
     private var timer: Timer?
     
@@ -40,7 +40,7 @@ final class EqualizerColumn: UIStackView {
     }
     
     func runTimer() {
-        let randomCoeff = Double(arc4random_uniform(UInt32(5))) / 10 + 0.2
+        let randomCoeff = Double(arc4random_uniform(UInt32(5))) / 10
         timer = Timer.scheduledTimer(timeInterval: (animationTime + randomCoeff), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     }
     
