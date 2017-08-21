@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>Pods-Equalizer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-EqualizerTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-EqualizerUITests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RxSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SnapKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>07781C985998DD6E2EC55DB9902B4EC9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0A6B33603AB8EEDC5A42C45A05A0208F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>318FE695E958EAD67B873FF19ECD3176</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B4B864DD9E509126638A37B6B8160DB9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F9DD33775F66D5AF29C5E84EF01521EB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
