@@ -37,42 +37,53 @@ final class EqualizerColumn: UIStackView {
     
     func runTimer() {
         var previousVolumeLevel = 0
-        Observable<Int>.interval(RxTimeInterval(animationTime), scheduler: MainScheduler.instance)
+        Observable<Int>.interval(RxTimeInterval(animationTime + 0.4), scheduler: MainScheduler.instance)
             .map { _ in return (previousVolumeLevel) }
             .subscribe(onNext: { [unowned self] (previousVolume) in
-                let volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count * 3 / 4)) + UInt32(self.elements.count / 4))
-                let singleAnimationTime = self.animationTime / Double(volumeLevel)
-                if previousVolumeLevel <= volumeLevel {
-                    let components = self.elements.dropLast(volumeLevel)
-                    self.decreaseSequentialAnimation(elements: components, animationTime: singleAnimationTime)
-                } else {
-                    let components = self.elements.dropFirst(volumeLevel)
-                    self.increaseSequentialAnimation(elements: components, animationTime: singleAnimationTime)
+                let volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 2)) + UInt32(self.elements.count / 4))
+                if previousVolumeLevel < volumeLevel {
+                    let singleAnimationTime = self.animationTime / Double(volumeLevel - previousVolumeLevel)
+                    let components = self.elements[previousVolumeLevel...volumeLevel]
+                    self.sequentialAnimation(direction: .decrease, elements: components, animationTime: singleAnimationTime)
+                } else if previousVolumeLevel > volumeLevel {
+                    let singleAnimationTime = self.animationTime / Double(previousVolumeLevel - volumeLevel)
+                    let components = self.elements[volumeLevel...previousVolumeLevel]
+                    self.sequentialAnimation(direction: .increase, elements: components, animationTime: singleAnimationTime)
                 }
                 previousVolumeLevel = volumeLevel
         }).addDisposableTo(disposeBag)
     }
     
-    private func decreaseSequentialAnimation(elements: ArraySlice<EqualizerComponent>, animationTime: Double) {
-        guard let component = elements.first else { return }
-        let rest = elements.dropFirst()
+    enum AnimationDirection {
+        case increase, decrease
+    }
+    
+    private func sequentialAnimation(
+        direction: AnimationDirection,
+        elements: ArraySlice<EqualizerComponent>,
+        animationTime: Double
+    ) {
+        guard !elements.isEmpty else { return }
+        let component: EqualizerComponent
+        let rest: ArraySlice<EqualizerComponent>
+        switch direction {
+        case .increase:
+            component = elements.last!
+            rest = elements.dropLast()
+        case .decrease:
+            component = elements.first!
+            rest = elements.dropFirst()
+        }
         UIView.animate(withDuration: animationTime, animations: {
-            component.state = .off
+            switch direction {
+                case .increase: component.state = .on
+                case .decrease: component.state = .off
+            }
         }) { _ in
-            self.decreaseSequentialAnimation(elements: rest, animationTime: animationTime)
+            self.sequentialAnimation(direction: direction, elements: rest, animationTime: animationTime)
         }
     }
     
-    
-    private func increaseSequentialAnimation(elements: ArraySlice<EqualizerComponent>, animationTime: Double) {
-        guard let component = elements.last else { return }
-        let rest = elements.dropLast()
-        UIView.animate(withDuration: animationTime, animations: {
-            component.state = .on
-        }) { _ in
-            self.increaseSequentialAnimation(elements: rest, animationTime: animationTime)
-        }
-    }
     override func layoutSubviews() {
         let elementsNumber = Int(frame.height / (EqualizerComponent.defaultHeight + offset))
         for _ in 0..<elementsNumber {
