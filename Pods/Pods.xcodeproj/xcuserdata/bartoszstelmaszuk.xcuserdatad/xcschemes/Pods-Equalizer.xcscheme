@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "07781C985998DD6E2EC55DB9902B4EC9"
+               BlueprintIdentifier = "7CEFA8350E4491845F542FC779AB5737"
                BuildableName = "Pods_Equalizer.framework"
                BlueprintName = "Pods-Equalizer"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "07781C985998DD6E2EC55DB9902B4EC9"
+            BlueprintIdentifier = "7CEFA8350E4491845F542FC779AB5737"
             BuildableName = "Pods_Equalizer.framework"
             BlueprintName = "Pods-Equalizer"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -9,14 +9,18 @@
 import Foundation
 import UIKit
 import SnapKit
-import RxSwift
 
 final class EqualizerColumn: UIStackView {
     
+    enum AnimationDirection {
+        case increase, decrease
+    }
+    
     private let offset: CGFloat = 10
     private var elements: [EqualizerComponent] = []
-    private let disposeBag = DisposeBag()
     private let animationTime = 0.2
+    private var previousVolumeLevel = 0
+    private var timer: Timer?
     
     
     init() {
@@ -36,26 +40,22 @@ final class EqualizerColumn: UIStackView {
     }
     
     func runTimer() {
-        var previousVolumeLevel = 0
-        Observable<Int>.interval(RxTimeInterval(animationTime + 0.4), scheduler: MainScheduler.instance)
-            .map { _ in return (previousVolumeLevel) }
-            .subscribe(onNext: { [unowned self] (previousVolume) in
-                let volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 2)) + UInt32(self.elements.count / 4))
-                if previousVolumeLevel < volumeLevel {
-                    let singleAnimationTime = self.animationTime / Double(volumeLevel - previousVolumeLevel)
-                    let components = self.elements[previousVolumeLevel...volumeLevel]
-                    self.sequentialAnimation(direction: .decrease, elements: components, animationTime: singleAnimationTime)
-                } else if previousVolumeLevel > volumeLevel {
-                    let singleAnimationTime = self.animationTime / Double(previousVolumeLevel - volumeLevel)
-                    let components = self.elements[volumeLevel...previousVolumeLevel]
-                    self.sequentialAnimation(direction: .increase, elements: components, animationTime: singleAnimationTime)
-                }
-                previousVolumeLevel = volumeLevel
-        }).addDisposableTo(disposeBag)
+        let randomCoeff = Double(arc4random_uniform(UInt32(5))) / 10 + 0.2
+        timer = Timer.scheduledTimer(timeInterval: (animationTime + randomCoeff), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     }
     
-    enum AnimationDirection {
-        case increase, decrease
+    @objc private func update() {
+        let volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 2)) + UInt32(self.elements.count / 4))
+        if previousVolumeLevel < volumeLevel {
+            let singleAnimationTime = self.animationTime / Double(volumeLevel - previousVolumeLevel)
+            let components = self.elements[previousVolumeLevel...volumeLevel]
+            self.sequentialAnimation(direction: .decrease, elements: components, animationTime: singleAnimationTime)
+        } else if previousVolumeLevel > volumeLevel {
+            let singleAnimationTime = self.animationTime / Double(previousVolumeLevel - volumeLevel)
+            let components = self.elements[volumeLevel...previousVolumeLevel]
+            self.sequentialAnimation(direction: .increase, elements: components, animationTime: singleAnimationTime)
+        }
+        previousVolumeLevel = volumeLevel
     }
     
     private func sequentialAnimation(

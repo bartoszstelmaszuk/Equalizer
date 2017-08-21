@@ -7,7 +7,7 @@ import Foundation
 import UIKit
 
 enum EqualizerComponentState {
-    case on, inProgress, off
+    case on, off
 }
 
 final class EqualizerComponent: UIView {
@@ -19,8 +19,7 @@ final class EqualizerComponent: UIView {
         didSet {
             switch state {
                 case .on: backgroundColor = .white
-                case .off: backgroundColor = .clear
-                case .inProgress: backgroundColor = .lightGray
+                case .off: backgroundColor = .lightGray
             }
         }
     }

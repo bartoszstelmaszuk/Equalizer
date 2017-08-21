@@ -7,7 +7,6 @@ target 'Equalizer' do
 
   # Pods for Equalizer
   pod 'SnapKit'
-  pod 'RxSwift'
 
   target 'EqualizerTests' do
     inherit! :search_paths
