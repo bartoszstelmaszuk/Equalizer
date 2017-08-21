@@ -12,8 +12,8 @@ enum EqualizerComponentState {
 
 final class EqualizerComponent: UIView {
     
-    static let defaultHeight: CGFloat = 10
-    static let defaultWidth: CGFloat = 60
+    static let defaultHeight: CGFloat = 4
+    static let defaultWidth: CGFloat = 15
 
     var state: EqualizerComponentState = .off {
         didSet {

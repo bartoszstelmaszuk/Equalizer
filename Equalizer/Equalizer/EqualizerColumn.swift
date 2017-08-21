@@ -16,15 +16,15 @@ final class EqualizerColumn: UIStackView {
         case increase, decrease
     }
     
-    private let offset: CGFloat = 10
+    private let rowSpacing: CGFloat
     private var elements: [EqualizerComponent] = []
-    private let animationTime = 0.1
+    private let animationTime = 0.2
     private var previousVolumeLevel = 0
     private var timer: Timer?
-    private var tickNumber = 0
     
     
-    init() {
+    init(rowSpacing: CGFloat) {
+        self.rowSpacing = rowSpacing
         super.init(frame: .zero)
         configureSelf()
     }
@@ -36,32 +36,30 @@ final class EqualizerColumn: UIStackView {
     func configureSelf() {
         axis = .vertical
         distribution = .equalSpacing
-        alignment = .center
-        spacing = offset
+        alignment = .fill
+        spacing = rowSpacing
     }
     
     func runTimer() {
-        let randomCoeff = Double(arc4random_uniform(UInt32(5))) / 10
-        timer = Timer.scheduledTimer(timeInterval: (animationTime + randomCoeff), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+        let randomCoeff = Double(arc4random_uniform(UInt32(50))) / 100
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + randomCoeff) {
+            self.timer = Timer.scheduledTimer(timeInterval: (self.animationTime), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+        }
     }
     
     @objc private func update() {
-        let volumeLevel: Int
-        if tickNumber % 2 == 0 {
-            volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 5)) + UInt32(self.elements.count / 4))
-        } else {
-            volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 5)) + UInt32(self.elements.count / 2))
-        }
+        let volumeLevel = Int(arc4random_uniform(UInt32(self.elements.count / 2)) + UInt32(self.elements.count / 4))
+        let animationCoeff = 0.6
         if previousVolumeLevel < volumeLevel {
-            let singleAnimationTime = self.animationTime / Double(volumeLevel - previousVolumeLevel)
+            let singleAnimationTime = self.animationTime * animationCoeff / Double(volumeLevel - previousVolumeLevel)
             let components = self.elements[previousVolumeLevel...volumeLevel]
             self.sequentialAnimation(direction: .decrease, elements: components, animationTime: singleAnimationTime)
         } else if previousVolumeLevel > volumeLevel {
-            let singleAnimationTime = self.animationTime / Double(previousVolumeLevel - volumeLevel)
+            let singleAnimationTime = self.animationTime * animationCoeff / Double(previousVolumeLevel - volumeLevel)
             let components = self.elements[volumeLevel...previousVolumeLevel]
             self.sequentialAnimation(direction: .increase, elements: components, animationTime: singleAnimationTime)
         }
-        tickNumber = tickNumber + 1
         previousVolumeLevel = volumeLevel
     }
     
@@ -92,7 +90,7 @@ final class EqualizerColumn: UIStackView {
     }
     
     override func layoutSubviews() {
-        let elementsNumber = Int(frame.height / (EqualizerComponent.defaultHeight + offset))
+        let elementsNumber = 8
         for _ in 0..<elementsNumber {
             let element = EqualizerComponent()
             element.state = .on

@@ -9,9 +9,12 @@ import SnapKit
 
 final class MainView: UIView {
     
-    private let equalizerView = EqualizerView()
+    private let rowSpacing: CGFloat = 1.13
+    private let columnSpacing: CGFloat = 3.4
+    private let equalizerView: EqualizerView
 
     init() {
+        equalizerView = EqualizerView(rowSpacing: rowSpacing, columnSpacing: columnSpacing)
         super.init(frame: .zero)
         configureSelf()
         configureConstraints()
@@ -30,8 +33,8 @@ final class MainView: UIView {
         equalizerView.snp.makeConstraints { (maker) in
             maker.centerX.equalToSuperview()
             maker.centerY.equalToSuperview()
-            maker.height.equalToSuperview().multipliedBy(0.3)
-            maker.width.equalToSuperview().multipliedBy(0.8)
+            maker.height.equalTo(8 * EqualizerComponent.defaultHeight + 7 * rowSpacing)
+            maker.width.equalTo(8 * EqualizerComponent.defaultWidth + 7 * columnSpacing)
         }
     }
     

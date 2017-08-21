@@ -10,9 +10,12 @@ import SnapKit
 final class EqualizerView: UIStackView {
     
     private var columns: [EqualizerColumn] = []
-    private let offset: CGFloat = 10
+    private let columnSpacing: CGFloat
+    private let rowSpacing: CGFloat
 
-    init() {
+    init(rowSpacing: CGFloat, columnSpacing: CGFloat) {
+        self.rowSpacing = rowSpacing
+        self.columnSpacing = columnSpacing
         super.init(frame: .zero)
         configureSelf()
     }
@@ -25,17 +28,17 @@ final class EqualizerView: UIStackView {
         axis = .horizontal
         distribution = .equalSpacing
         alignment = .fill
-        spacing = offset
+        spacing = columnSpacing
         
     }
     
     override func layoutSubviews() {
-        let columnsNumber = Int(frame.width / (EqualizerComponent.defaultWidth + offset))
+        let columnsNumber = 8
         for _ in 0..<columnsNumber {
-            let element = EqualizerColumn()
+            let element = EqualizerColumn(rowSpacing: rowSpacing)
             columns.append(element)
             element.snp.makeConstraints { (maker) in
-                maker.width.equalTo(EqualizerComponent.defaultWidth + offset)
+                maker.width.equalTo(EqualizerComponent.defaultWidth)
             }
             addArrangedSubview(element)
         }
