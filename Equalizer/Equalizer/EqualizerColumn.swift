@@ -21,10 +21,12 @@ final class EqualizerColumn: UIStackView {
     private let animationTime = 0.2
     private var previousVolumeLevel = 0
     private var timer: Timer?
+    private let rowsNumber: Int
     
     
-    init(rowSpacing: CGFloat) {
+    init(rowSpacing: CGFloat, rowsNumber: Int) {
         self.rowSpacing = rowSpacing
+        self.rowsNumber = rowsNumber
         super.init(frame: .zero)
         configureSelf()
     }
@@ -90,8 +92,7 @@ final class EqualizerColumn: UIStackView {
     }
     
     override func layoutSubviews() {
-        let elementsNumber = 8
-        for _ in 0..<elementsNumber {
+        for _ in 0..<rowsNumber {
             let element = EqualizerComponent()
             element.state = .on
             elements.append(element)

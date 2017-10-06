@@ -12,10 +12,14 @@ final class EqualizerView: UIStackView {
     private var columns: [EqualizerColumn] = []
     private let columnSpacing: CGFloat
     private let rowSpacing: CGFloat
+    private let columnsNumber: Int
+    private let rowsNumber: Int
 
-    init(rowSpacing: CGFloat, columnSpacing: CGFloat) {
+    init(rowSpacing: CGFloat, columnSpacing: CGFloat, columnsNumber: Int, rowsNumber: Int) {
         self.rowSpacing = rowSpacing
         self.columnSpacing = columnSpacing
+        self.columnsNumber = columnsNumber
+        self.rowsNumber = rowsNumber
         super.init(frame: .zero)
         configureSelf()
     }
@@ -33,9 +37,8 @@ final class EqualizerView: UIStackView {
     }
     
     override func layoutSubviews() {
-        let columnsNumber = 8
         for _ in 0..<columnsNumber {
-            let element = EqualizerColumn(rowSpacing: rowSpacing)
+            let element = EqualizerColumn(rowSpacing: rowSpacing, rowsNumber: rowsNumber)
             columns.append(element)
             element.snp.makeConstraints { (maker) in
                 maker.width.equalTo(EqualizerComponent.defaultWidth)

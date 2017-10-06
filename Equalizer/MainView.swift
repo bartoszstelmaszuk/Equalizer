@@ -11,10 +11,17 @@ final class MainView: UIView {
     
     private let rowSpacing: CGFloat = 1.13
     private let columnSpacing: CGFloat = 3.4
+    private let columnsNumber: Int = 8
+    private let rowsNumber: Int = 8
     private let equalizerView: EqualizerView
 
     init() {
-        equalizerView = EqualizerView(rowSpacing: rowSpacing, columnSpacing: columnSpacing)
+        equalizerView = EqualizerView(
+            rowSpacing: rowSpacing,
+            columnSpacing: columnSpacing,
+            columnsNumber: columnsNumber,
+            rowsNumber: rowsNumber
+        )
         super.init(frame: .zero)
         configureSelf()
         configureConstraints()
@@ -33,8 +40,8 @@ final class MainView: UIView {
         equalizerView.snp.makeConstraints { (maker) in
             maker.centerX.equalToSuperview()
             maker.centerY.equalToSuperview()
-            maker.height.equalTo(8 * EqualizerComponent.defaultHeight + 7 * rowSpacing)
-            maker.width.equalTo(8 * EqualizerComponent.defaultWidth + 7 * columnSpacing)
+            maker.height.equalTo(CGFloat(rowsNumber + 1) * EqualizerComponent.defaultHeight + CGFloat(rowsNumber - 1) * rowSpacing)
+            maker.width.equalTo(CGFloat(columnsNumber + 1) * EqualizerComponent.defaultWidth + CGFloat(columnsNumber + 1) * columnSpacing)
         }
     }
     
